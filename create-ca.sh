@@ -5,6 +5,8 @@
 
 set -e
 
+KEY_LENGHT_BITS=2048
+
 if [ -f "ca.crt" ] || [ -f "ca.key" ]; then
     echo -e "\e[41mCertificate Authority files already exist!\e[49m"
     echo
@@ -16,10 +18,10 @@ if [ -f "ca.crt" ] || [ -f "ca.key" ]; then
 fi
 
 # Generate private key
-openssl genrsa -out ca.key 2048
+openssl genrsa -out ca.key ${KEY_LENGHT_BITS}
 
 # Generate root certificate
-openssl req -x509 -new -nodes -subj "/C=US/O=_Development CA/CN=Development certificates" -key ca.key -sha256 -days 3650 -out ca.crt
+openssl req -x509 -new -nodes -subj "/C=${1}/ST=${2}/L=${3}/O=${4} CA/CN=${5}" -key ca.key -sha256 -days 3650 -out ca.crt
 
 echo -e "\e[42mSuccess!\e[49m"
 echo
